@@ -12,6 +12,7 @@
         <module>core</module>
         <module>admin</module>
         <module>app</module>
+        <module>myTrip</module>
     </modules>
 
     <properties>
@@ -29,7 +30,7 @@
         <fastjson.version>1.2.31</fastjson.version>
         <slf4j.version>1.7.21</slf4j.version>
         <lombok.version>1.16.6</lombok.version>
-
+        <spring-boot.version>1.5.4.RELEASE</spring-boot.version>
     </properties>
 
     <dependencyManagement>
