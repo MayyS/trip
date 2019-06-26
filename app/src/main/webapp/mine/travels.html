@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>我的游记</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link rel="stylesheet" href="/js/plugins/bootstrap-4.1.1-dist/css/bootstrap.min.css">
+		<script src="/js/plugins/jquery/jquery.min.js"></script>
+		<script src="/js/plugins/bootstrap-4.1.1-dist/js/bootstrap.min.js"></script>
+		<script src="/js/plugins/jrender/jrender.min.js"></script>
+		<link rel="stylesheet" href="/css/font/css/font-awesome.min.css" />
+		<link rel="stylesheet" href="/css/reset.css" />
+		<link rel="stylesheet" href="/css/userTravels.css" />
+		<link rel="stylesheet" href="/js/plugins/dialog2/css/dialog.css" />
+		<script src="/js/plugins/dialog2/js/dialog.min.js"></script>
+		<script src="/js/common.js"></script>
+		<script>
+			$(function(){
+				//当前用户信息
+				var user = JSON.parse(sessionStorage.getItem("user"));
+				var url = "/users/"+user.id+"/travels";
+
+				//用于存储游记数据的数组
+				var travelsData = [];
+				//分页
+				var currentPage = $("[name=currentPage]");
+				var pageSize = $("[name=pageSize]");
+
+				//默认查询一次
+				query();
+
+				var $document = $(document);
+				var $window = $(window);
+				//窗口滚动时事件
+				$(window).scroll(function(){
+					//网页卷上去的高度 + 网页中能看到高度 >= 网页全文高度
+					if ($document.scrollTop() + $window.height() >= $document.height()) {
+						//结果总数
+						var rows = $("[name=rows]").val();
+						//滚动到最页面底部，如果有数据就继续加载
+						if(travelsData.length>=rows){
+							$(document).dialog({
+								type : 'notice',
+								infoText: '已经到底了!',
+								autoClose: 2500,
+								position: 'center'  // center: 居中; bottom: 底部
+							});
+						}else {
+							//设置currentPage+1
+							currentPage.val(parseInt(currentPage.val()) + 1);
+							query();
+						}
+					}
+				});
+
+				function query() {
+					//获取分页信息
+					var pageValue = currentPage.val();
+					var pageSizeValue =  pageSize.val();
+
+					$.get(url,{currentPage:pageValue,pageSize:pageSizeValue},function (data) {
+						console.log(data)
+					    //合并之前的数据
+						travelsData = $.merge(travelsData, data.list);
+						//渲染到页面
+						$(".travels").renderValues({
+							rows: data.pageSize,
+							data: travelsData
+						});
+
+						//绑定点击事件
+						$(".list [data-href]").click(skipHref);
+
+					})
+				}
+            })
+			
+		</script>
+		
+	</head>
+
+	<body>
+		<div class="search-head">
+			<div class="row nav-search">
+				<div class="col">
+					<a href="profiles.html">
+						<span><i class="fa fa-chevron-left" ></i></span>
+					</a>
+				</div>
+				<div class="col">
+					<span>我的游记</span>
+				</div>
+				<div class="col"></div>
+			</div>
+		</div>
+
+
+		<div class="container travels">
+			<input type="hidden" name="currentPage" value="1" >
+			<input type="hidden" name="pageSize" value="5" >
+			<input type="hidden" name="rows" render-value="rows"  >
+			<dl class="list" render-loop="data">
+				<dd>
+					<a data-href="editTravels.html" render-attr="data-id=data.id">
+						<img render-src="data.coverUrl" />
+						<h6 class="title" render-html="data.title"></h6>
+						<p>最近更新时间 <span render-html="data.lastUpdateTime"></span>
+						  <span class="span-right">
+							  <i class="fa fa-heart"></i><span>0</span>收藏
+						  <i class="fa fa-thumbs-o-up" ></i><span>0</span>点赞</span>
+						</p>
+					</a>
+				</dd>
+			</dl>
+		</div>
+		
+		
+		
+	</body>
+</html>

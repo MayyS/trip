@@ -4,24 +4,40 @@
   <resultMap id="BaseResultMap" type="cn.wolfcode.trip.base.domain.Region" >
     <id column="id" property="id" />
     <result column="name" property="name" />
-    <result column="parent_id" property="parent_id" />
     <result column="state" property="state" />
   </resultMap>
+
+  <sql id="regionClomun">
+    select id, name, parent_id, state
+    from region
+  </sql>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from region
     where id = #{id}
   </delete>
   <insert id="insert" parameterType="cn.wolfcode.trip.base.domain.Region" useGeneratedKeys="true" keyProperty="id" >
     insert into region (name, parent_id, state)
-    values (#{name}, #{parent_id}, #{state})
+    values (#{name}, #{parent.id}, #{state})
   </insert>
-  <update id="updateByPrimaryKey" parameterType="cn.wolfcode.trip.base.domain.Region" >
+
+  <update id="updateByPrimaryKey2" parameterType="cn.wolfcode.trip.base.domain.Region" >
     update region
     set name = #{name},
-      parent_id = #{parent_id},
+      parent_id = #{parent.id},
       state = #{state}
     where id = #{id}
   </update>
+
+  <update id="updateByPrimaryKey" parameterType="cn.wolfcode.trip.base.domain.Region" >
+    update region
+    <set>
+      <if test="name!=null and name!=''">name=#{name},</if>
+      <if test="parent!=null">parent_id = #{parent.id},</if>
+      <if test="state!=null">state = #{state},</if>
+    </set>
+    where id = #{id}
+  </update>
+
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select id, name, parent_id, state
     from region
@@ -30,5 +46,16 @@
   <select id="selectAll" resultMap="BaseResultMap" >
     select id, name, parent_id, state
     from region
+  </select>
+  <select id="getRegionByParentId" resultType="cn.wolfcode.trip.base.domain.Region">
+    <include refid="regionClomun"/>
+    <where>
+      <if test="parentId==null">
+        and parent_id is null
+      </if>
+      <if test="parentId!=null">
+        and parent_id=#{parentId}
+      </if>
+    </where>
   </select>
 </mapper>

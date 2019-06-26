@@ -1,6 +1,8 @@
 package cn.wolfcode.trip.base.mapper;
 
 import cn.wolfcode.trip.base.domain.Region;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 
 public interface RegionMapper {
@@ -13,4 +15,6 @@ public interface RegionMapper {
     List<Region> selectAll();
 
     int updateByPrimaryKey(Region record);
+
+    List<Region>getRegionByParentId(@Param("parentId") Long parentId);
 }

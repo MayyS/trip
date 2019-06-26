@@ -5,9 +5,9 @@ public class Region {
 
     private String name;
 
-    private Long parent_id;
+    private Region parent;
 
-    private Integer state;
+    private Integer state=0;
 
     public Long getId() {
         return id;
@@ -25,12 +25,12 @@ public class Region {
         this.name = name;
     }
 
-    public Long getParent_id() {
-        return parent_id;
+    public Region getParent() {
+        return parent;
     }
 
-    public void setParent_id(Long parent_id) {
-        this.parent_id = parent_id;
+    public void setParent(Region parent) {
+        this.parent = parent;
     }
 
     public Integer getState() {
@@ -39,5 +39,15 @@ public class Region {
 
     public void setState(Integer state) {
         this.state = state;
+    }
+
+    @Override
+    public String toString() {
+        return "Region{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", parent=" + parent +
+                ", state=" + state +
+                '}';
     }
 }

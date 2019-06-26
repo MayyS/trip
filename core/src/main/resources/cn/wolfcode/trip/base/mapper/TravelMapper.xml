@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.wolfcode.trip.base.mapper.TravelMapper" >
+
+
+  <resultMap id="BaseResultMap" type="cn.wolfcode.trip.base.domain.Travel" >
+    <id column="id" property="id" />
+    <result column="title" property="title" />
+    <result column="travelTime" property="travelTime" />
+    <result column="perExpends" property="perExpends" />
+    <result column="days" property="days" />
+    <result column="person" property="person" />
+    <result column="author_id" property="author_id" />
+    <result column="createTime" property="createTime" />
+    <result column="releaseTime" property="releaseTime" />
+    <result column="isPublic" property="isPublic" />
+    <result column="place_id" property="place_id" />
+    <result column="coverUrl" property="coverUrl" />
+    <result column="lastUpdateTime" property="lastUpdateTime" />
+    <result column="state" property="state" />
+  </resultMap>
+
+  <resultMap id="allMap" type="cn.wolfcode.trip.base.domain.Travel">
+    <id column="id" property="id" />
+    <result column="title" property="title" />
+    <result column="travelTime" property="travelTime" />
+    <result column="perExpends" property="perExpends" />
+    <result column="days" property="days" />
+    <result column="person" property="person" />
+    <result column="author_id" property="author_id" />
+    <result column="createTime" property="createTime" />
+    <result column="releaseTime" property="releaseTime" />
+    <result column="isPublic" property="isPublic" />
+    <result column="place_id" property="place_id" />
+    <result column="coverUrl" property="coverUrl" />
+    <result column="lastUpdateTime" property="lastUpdateTime" />
+    <result column="state" property="state" />
+    <association property="author" javaType="User" >
+      <result property="id" column="u_id"/>
+      <result property="nickName" column="nickName"/>
+      <result property="headImgUrl" column="headImgUrl"/>
+    </association>
+    <association property="place" javaType="Region" >
+      <result property="id" column="r_id"/>
+      <result property="name" column="name"/>
+    </association>
+    <association property="travelContent" javaType="TravelContent" >
+      <result property="content" column="content"/>
+    </association>
+  </resultMap>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from travel
+    where id = #{id}
+  </delete>
+  <insert id="insert" parameterType="cn.wolfcode.trip.base.domain.Travel" useGeneratedKeys="true" keyProperty="id" >
+    insert into travel (title, travelTime, perExpends, days, person, author_id, 
+      createTime, releaseTime, isPublic, place_id, coverUrl, lastUpdateTime, 
+      state)
+    values (#{title}, #{travelTime}, #{perExpends}, #{days}, #{person}, #{author_id}, 
+      #{createTime}, #{releaseTime}, #{isPublic}, #{place_id}, #{coverUrl}, #{lastUpdateTime}, 
+      #{state})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.wolfcode.trip.base.domain.Travel" >
+    update travel
+    set title = #{title},
+      travelTime = #{travelTime},
+      perExpends = #{perExpends},
+      days = #{days},
+      person = #{person},
+      author_id = #{author_id},
+      createTime = #{createTime},
+      releaseTime = #{releaseTime},
+      isPublic = #{isPublic},
+      place_id = #{place_id},
+      coverUrl = #{coverUrl},
+      lastUpdateTime = #{lastUpdateTime},
+      state = #{state}
+    where id = #{id}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select id, title, travelTime, perExpends, days, person, author_id, createTime, releaseTime, 
+    isPublic, place_id, coverUrl, lastUpdateTime, state
+    from travel
+    where id = #{id}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, title, travelTime, perExpends, days, person, author_id, createTime, releaseTime, 
+    isPublic, place_id, coverUrl, lastUpdateTime, state
+    from travel
+  </select>
+  <sql id="baseCloumn">
+    select id, title, travelTime, perExpends, days, person, author_id, createTime, releaseTime,
+    isPublic, place_id, coverUrl, lastUpdateTime, state
+  </sql>
+  <select id="selectForList" resultType="Travel">
+    <include refid="baseCloumn"/>
+    from travel
+    where author_id=#{userId}
+  </select>
+
+
+  <select id="getContentById" resultMap="allMap">
+    select t.id,t.title,t.coverUrl ,u.id u_id ,u.nickName,u.headImgUrl,u.id u_id,r.id r_id,r.name,c.content,
+      t.travelTime, t.perExpends, t.days, t.person,t.isPublic,
+      t.createTime
+      from travel t left join user u on t.author_id = u.id
+      left join region r on r.id = t.place_id
+      left join travelcontent c on c.id = t.id
+      where t.id=#{tid}
+  </select>
+
+</mapper>

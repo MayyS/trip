@@ -1,13 +1,17 @@
 package cn.wolfcode.trip.app.controller;
 
 import cn.wolfcode.trip.app.util.JsonResult;
+import cn.wolfcode.trip.base.domain.Travel;
 import cn.wolfcode.trip.base.domain.User;
+import cn.wolfcode.trip.base.query.QueryObject;
+import cn.wolfcode.trip.service.ITravelService;
 import cn.wolfcode.trip.service.IUserService;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Auther:S
@@ -20,6 +24,8 @@ public class UserController {
 
     @Autowired
     private IUserService userService;
+    @Autowired
+    private ITravelService travelService;
 
     @PostMapping
     public JsonResult register(User user){
@@ -52,5 +58,14 @@ public class UserController {
         return result;
     }
 
+
+    @RequestMapping("/{id}/travels")
+    @ResponseBody
+    public  PageInfo getUserTravels(@PathVariable("id") Long id, QueryObject obj){
+        obj.setUserId(id);
+        PageInfo pageInfo=travelService.query(obj);
+        List<Travel>list=pageInfo.getList();
+        return pageInfo;
+    }
 
 }

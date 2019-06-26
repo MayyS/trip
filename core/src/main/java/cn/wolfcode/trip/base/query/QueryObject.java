@@ -8,6 +8,15 @@ public class QueryObject {
     private int currentPage=1;
     private int pageSize=5;
     private String keyWord;
+    private Long userId;
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 
     public String getKeyWord() {
         return keyWord;
