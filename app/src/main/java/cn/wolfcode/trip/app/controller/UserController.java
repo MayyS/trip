@@ -37,15 +37,20 @@ public class UserController {
         return result;
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     public JsonResult update(User user){
         JsonResult result=new JsonResult();
         try {
+//            System.out.println(user);
             userService.saveOrUpdate(user);
+            User logU=userService.get(user.getId());
+            result.setObj(logU);
+            System.out.println(logU);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println(user.toString());
         return result;
     }
+
+
 }

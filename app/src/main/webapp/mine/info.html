@@ -19,14 +19,52 @@
 
 	<script>
 		$(function () {
+		    var flag=-1;
             var user=JSON.parse(sessionStorage.getItem("user"));
             $(".info").renderValues(user);
-            $(".myBg").css("background-image","url+("+user.coverImgUrl+")");
+            console.log(user);
+            $(".myBg").css("background-image","url("+user.coverImgUrl+")");
+
+            $("#headBtn,#coverBtn").click(function () {
+				// alert(this.id);
+				flag=this.id=="headBtn" ? 1: 0;
+				$("#fileSelect").click();
+            });
+            
+            $("#fileSelect").change(function () {
+                $("#fileUpload").ajaxSubmit(function (data) {
+                    console.log(flag);
+                    // alert(flag);
+                    if(flag==1){
+                        $("#headImgUrl").val(data.url);
+                        $("#headImg").attr("src",data.url);
+					}else{
+                        $("#coverImgUrl").val(data.url);
+                        $(".myBg").css("background-image","url("+data.url+")");
+					}
+                })
+            });
+
+            $("#infoForm").attr("action","/users/"+user.id);
+
+            $("#saveBtn").click(function () {
+				$("#infoForm").ajaxSubmit(function (data) {
+					console.log(data);
+					if(data.success){
+					    sessionStorage.setItem("user",JSON.stringify(data.obj));
+					    window.location.href="/mine/profiles.html";
+					}
+                })
+            })
         });
 
 	</script>
 
 	<body>
+
+	<form action="/images" method="post" id="fileUpload" enctype="multipart/form-data">
+		<input type="file" name="file" id="fileSelect" hidden>
+	</form>
 
 		<div class="search-head">
 			<div class="row nav-search">
@@ -54,16 +92,19 @@
 			</div>
 
 			<form id="infoForm" method="post" >
-					<input type="hidden" name="id" >
-				
-					<label>昵称</label><input type="text" name="nickName"render-value="nickName" class="form-control" ><br />
-					<label>性别</label><select class="form-control" name="gender" render-value="gender">
-							<option value="-1">保密</option>
-							<option value="1">男</option>
-							<option value="0">女</option>
-						</select><br />
-					<label>地区</label><input type="text" name="place"  render-value="place" class="form-control"><br />
-					<label>签名</label><textarea name="sign"  render-value="sign" class="form-control" rows="5" ></textarea>
+				<input name="_method" value="put" type="hidden">
+				<!--<input type="hidden" name="id" >-->
+				<input type="hidden" name="headImgUrl" id="headImgUrl">
+				<input type="hidden" name="coverImgUrl" id="coverImgUrl">
+				<label>昵称</label><input type="text" name="nickName"render-value="nickName" class="form-control" ><br />
+				<label>性别</label>
+				<select class="form-control" name="gender" render-value="gender">
+					<option value="-1">保密</option>
+					<option value="1">男</option>
+					<option value="0">女</option>
+				</select><br />
+				<label>地区</label><input type="text" name="place"  render-value="place" class="form-control"><br />
+				<label>签名</label><textarea name="sign"  render-value="sign" class="form-control" rows="5" ></textarea>
 			</form>
 		</div>
 		

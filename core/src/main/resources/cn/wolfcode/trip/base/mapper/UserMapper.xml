@@ -36,7 +36,8 @@
     values (#{email}, #{nickName}, #{password}, #{place}, #{headImgUrl}, #{gender}, #{coverImgUrl}, 
       #{sign})
   </insert>
-  <update id="updateByPrimaryKey" parameterType="cn.wolfcode.trip.base.domain.User" >
+
+  <update id="updateByPrimaryKey2" parameterType="cn.wolfcode.trip.base.domain.User" >
     update user
     set email = #{email},
       nickName = #{nickName},
@@ -48,6 +49,22 @@
       sign = #{sign}
     where id = #{id}
   </update>
+
+    <update id="updateByPrimaryKey" parameterType="User">
+        update user
+        <set>
+            <if test="email !=null and ''!=email">email = #{email},</if>
+            <if test="nickName !=null and ''!=nickName">nickName = #{nickName},</if>
+            <if test="password !=null and ''!=password">password = #{password},</if>
+            <if test="place !=null and ''!=place">place = #{place},</if>
+            <if test="headImgUrl !=null and ''!=headImgUrl">headImgUrl = #{headImgUrl},</if>
+            <if test="gender !=null">gender = #{gender},</if>
+            <if test="coverImgUrl !=null and ''!=coverImgUrl">coverImgUrl = #{coverImgUrl},</if>
+            <if test="sign !=null and ''!=sign">sign = #{sign},</if>
+        </set>
+        where id = #{id}
+    </update>
+
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select id, email, nickName, password, place, headImgUrl, gender, coverImgUrl, sign
     from user
@@ -60,7 +77,7 @@
   <select id="selectForList" resultType="User" >
       <include refid="properties"/>
         <where>
-          <if test="keyWord!=null and ''!=keyWord">
+          <if test="keyWord !=null and '' != keyWord ">
             and nickName like concat('%',#{keyWord},'%')
           </if>
         </where>

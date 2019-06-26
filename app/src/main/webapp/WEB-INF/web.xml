@@ -18,6 +18,23 @@
     <url-pattern>/</url-pattern>
   </servlet-mapping>
 
+  <filter>
+    <filter-name>imageFilter</filter-name>
+    <filter-class>cn.wolfcode.trip.app.filter.ImageFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>imageFilter</filter-name>
+    <url-pattern>/upload/*</url-pattern>
+  </filter-mapping>
+  
+  <filter>
+    <filter-name>HiddenHttpMethodFilter</filter-name>
+    <filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>HiddenHttpMethodFilter</filter-name>
+    <servlet-name>springMVC</servlet-name>
+  </filter-mapping>
   <!-- 配置字符编码过滤器 -->
   <filter>
     <filter-name>characterEncoding</filter-name>

@@ -45,7 +45,8 @@
             var user=JSON.parse(sessionStorage.getItem("user"));
             $(".simplePerson").renderValues(user);
             $(".redirect").click(function () {
-                window.parent.location="/mine/info.html";
+                var url=$(this).data("url");
+                window.parent.location=url;
             });
         });
 
@@ -64,7 +65,7 @@
     <hr>
     <div class="mymenu">
         <i class="fa fa-user fa-2x fa-fw"></i>
-        <a href="/mine/profiles.html" >
+        <a data-url="/mine/profiles.html" href="javascript:;" class="redirect" >
             我的</a>
     </div>
     <div class="mymenu">
@@ -77,7 +78,7 @@
     </div>
     <div class="mymenu">
         <i class="fa fa-cog fa-2x fa-fw"></i>
-        <a href="javascript:;" class="redirect">设置</a>
+        <a data-url="/mine/info.html" href="javascript:;" class="redirect">设置</a>
         <!--<a href="/mine/info.html">设置</a>-->
     </div>
     <hr style="margin-top: 50px;">

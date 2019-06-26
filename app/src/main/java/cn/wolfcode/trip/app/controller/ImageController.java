@@ -15,14 +15,15 @@ public class ImageController {
     @PostMapping("/images")
     public Map<String,Object> uploadImage(MultipartFile file){
         Map<String ,Object>result=new HashMap<>();
-        String uploadPath=UploadUtil.commonPath;
+        String uploadPath=UploadUtil.commonPath+"/upload/";
         uploadPath=UploadUtil.upload(file,uploadPath);
-        if("".equals(uploadPath)){
+        if("".equals(uploadPath)||file==null){
             result.put("status",0);
             result.put("msg","fail");
+        }else{
+            result.put("status",1);
+            result.put("url",uploadPath);
         }
-        result.put("status",1);
-         result.put("url","/upload/");
         return result;
     }
 }
