@@ -17,5 +17,9 @@ public interface ITravelService {
     PageInfo query(QueryObject obj);
 
     Travel getTravelsContentById(Long id);
+    void updateShowNum(Long travelId);
 
+    void saveOrUpdate(Travel travel,String content);
+
+    void changeState(Travel travel);
 }

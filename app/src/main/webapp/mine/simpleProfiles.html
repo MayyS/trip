@@ -12,8 +12,12 @@
     <link rel="stylesheet" href="/js/plugins/bootstrap-4.1.1-dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/font/css/font-awesome.min.css" />
     <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/js/plugins/dialog2/css/dialog.css"/>
     <script src="/js/plugins/jquery/jquery.min.js"></script>
     <script src="../js/plugins/jrender/jrender.min.js"></script>
+    <script src="/js/plugins/dialog2/js/dialog.min.js"></script>
+
+
 
     <style>
         .simplePerson {
@@ -48,7 +52,42 @@
                 var url=$(this).data("url");
                 window.parent.location=url;
             });
+
+
+            $("#logout").click(function () {
+                $(document).on('click', function () {
+                    $(document).dialog({
+                        type: 'confirm',
+                        closeBtnShow: true,
+                        content: '确认退出登录吗？',
+                        onClickConfirmBtn: function () {
+                            /*退出登录*/
+                            //1、清空页面缓存
+                            sessionStorage.removeItem("user");
+                            //2、清空后端session缓存
+                            $.ajax({
+                                url: "/sessions/logout",
+                                type: "DELETE",
+                                success: function (data) {
+                                    /*成功清空后台用户缓存*/
+                                    window.parent.location.href = "/index.html";
+                                }
+                            });
+                        },
+                        onClickCancelBtn: function () {
+                            // alert("22");
+                            window.parent.location.href = "/index.html";
+                        },
+                        onClickCloseBtn: function () {
+                            window.parent.location.href = "/index.html";
+                        }
+                    });
+                });
+            });
+
+
         });
+
 
     </script>
 
@@ -82,7 +121,7 @@
         <!--<a href="/mine/info.html">设置</a>-->
     </div>
     <hr style="margin-top: 50px;">
-    <div class="mymenu">
+    <div class="mymenu" id="logout">
         <i class="fa fa-sign-out fa-2x fa-fw"></i>
         <label>退出登录</label>
     </div>

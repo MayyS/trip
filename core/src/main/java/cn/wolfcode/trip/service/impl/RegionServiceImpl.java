@@ -4,6 +4,7 @@ import cn.wolfcode.trip.base.domain.Region;
 import cn.wolfcode.trip.base.mapper.RegionMapper;
 import cn.wolfcode.trip.base.query.QueryObject;
 import cn.wolfcode.trip.service.IRegionService;
+import com.alibaba.druid.support.spring.stat.annotation.Stat;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,8 +39,8 @@ public class RegionServiceImpl implements IRegionService {
     }
 
     @Override
-    public List<Region> listAll() {
-        List<Region>list=mapper.selectAll();
+    public List<Region> listAll(Integer state) {
+        List<Region>list=mapper.selectAll(state);
         return list;
     }
 

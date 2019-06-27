@@ -10,21 +10,12 @@ public class QueryObject {
     private String keyWord;
     private Long userId;
 
-    public Long getUserId() {
-        return userId;
-    }
+    private Long authorId;
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
+    private Long travelId;
 
-    public String getKeyWord() {
-        return keyWord;
-    }
-
-    public void setKeyWord(String keyWord) {
-        this.keyWord = keyWord;
-    }
+    private Boolean isPublic;
+    private  Integer state;
 
     public int getCurrentPage() {
         return currentPage;
@@ -40,5 +31,53 @@ public class QueryObject {
 
     public void setPageSize(int pageSize) {
         this.pageSize = pageSize;
+    }
+
+    public String getKeyWord() {
+        return keyWord;
+    }
+
+    public void setKeyWord(String keyWord) {
+        this.keyWord = keyWord;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public Long getAuthorId() {
+        return authorId;
+    }
+
+    public void setAuthorId(Long authorId) {
+        this.authorId = authorId;
+    }
+
+    public Boolean getPublic() {
+        return isPublic;
+    }
+
+    public void setPublic(Boolean aPublic) {
+        isPublic = aPublic;
+    }
+
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
+    }
+
+    public Long getTravelId() {
+        return travelId;
+    }
+
+    public void setTravelId(Long travelId) {
+        this.travelId = travelId;
     }
 }

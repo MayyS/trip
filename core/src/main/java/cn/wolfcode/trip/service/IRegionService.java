@@ -14,7 +14,7 @@ public interface IRegionService {
 
     void saveOrUpdate(Region region)throws Exception;
     Region get(Long id);
-    List<Region>listAll();
+    List<Region>listAll(Integer state);
 
     List<Region> getRegionMapByParentId(Long parentId);
 }

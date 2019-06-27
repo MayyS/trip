@@ -37,4 +37,12 @@ public class SessionController {
 
     }
 
+    @DeleteMapping("/logout")
+    @ResponseBody
+    public JsonResult logout(HttpSession session){
+        JsonResult js=new JsonResult();
+        session.removeAttribute("USER_IN_SESSION");
+        return js;
+    }
+
 }

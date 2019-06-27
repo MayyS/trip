@@ -5,6 +5,8 @@ package cn.wolfcode.trip.base.domain;
  * @Date:19/6/26
  */
 public class TravelContent {
+    private Long id;
+
     private String content;
 
     public String getContent() {
@@ -13,5 +15,13 @@ public class TravelContent {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

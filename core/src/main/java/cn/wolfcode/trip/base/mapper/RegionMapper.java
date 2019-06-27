@@ -12,7 +12,7 @@ public interface RegionMapper {
 
     Region selectByPrimaryKey(Long id);
 
-    List<Region> selectAll();
+    List<Region> selectAll(@Param("state") Integer state);
 
     int updateByPrimaryKey(Region record);
 

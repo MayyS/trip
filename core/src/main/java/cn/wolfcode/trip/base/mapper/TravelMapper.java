@@ -5,6 +5,7 @@ import cn.wolfcode.trip.base.query.QueryObject;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface TravelMapper {
     int deleteByPrimaryKey(Long id);
@@ -19,5 +20,10 @@ public interface TravelMapper {
 
     List<Travel>selectForList(QueryObject obj);
 
+
     Travel getContentById(@Param("tid") Long id);
+
+    void updateShowNum(@Param("travelId") Long travelId);
+
+    void changeState(Travel travel);
 }

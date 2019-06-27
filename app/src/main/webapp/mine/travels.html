@@ -64,7 +64,7 @@
 						travelsData = $.merge(travelsData, data.list);
 						//渲染到页面
 						$(".travels").renderValues({
-							rows: data.pageSize,
+							rows: data.pageNum,
 							data: travelsData
 						});
 

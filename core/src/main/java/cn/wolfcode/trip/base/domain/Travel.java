@@ -1,12 +1,20 @@
 package cn.wolfcode.trip.base.domain;
 
+import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Travel {
     private Long id;
 
     private String title;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
     private Date travelTime;
 
     private String perExpends;
@@ -17,6 +25,7 @@ public class Travel {
 
     private Long author_id;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date createTime;
 
     private Date releaseTime;
@@ -27,6 +36,7 @@ public class Travel {
 
     private String coverUrl;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date lastUpdateTime;
 
     private Integer state;
@@ -201,5 +211,12 @@ public class Travel {
                 ", author=" + author +
                 ", place=" + place +
                 '}';
+    }
+    public String getJsonString() {
+        Map<String, Object> json = new HashMap();
+        json.put("id", this.id);
+        json.put("title", this.title);
+        json.put("coverUrl", this.coverUrl);
+        return JSONObject.toJSONString(json);
     }
 }

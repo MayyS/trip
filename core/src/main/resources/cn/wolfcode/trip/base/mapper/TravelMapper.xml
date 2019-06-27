@@ -3,6 +3,26 @@
 <mapper namespace="cn.wolfcode.trip.base.mapper.TravelMapper" >
 
 
+  <sql id="where_sql">
+    <where>
+      <if test="travelId!=null">
+        and t.id = #{travelId}
+      </if>
+      <if test="authorId!=null">
+        and u.id = #{authorId}
+      </if>
+      <if test="isPublic!=null">
+        and t.isPublic = #{isPublic}
+      </if>
+      <if test="state!=null and state>=-1">
+        and t.state = #{state}
+      </if>
+      <if test="keyWord!=null">
+        and t.title like concat('%',#{keyWord},'%')
+      </if>
+    </where>
+  </sql>
+
   <resultMap id="BaseResultMap" type="cn.wolfcode.trip.base.domain.Travel" >
     <id column="id" property="id" />
     <result column="title" property="title" />
@@ -93,10 +113,22 @@
     select id, title, travelTime, perExpends, days, person, author_id, createTime, releaseTime,
     isPublic, place_id, coverUrl, lastUpdateTime, state
   </sql>
-  <select id="selectForList" resultType="Travel">
+
+  <select id="selectForList2" resultType="Travel">
     <include refid="baseCloumn"/>
     from travel
-    where author_id=#{userId}
+    <where>
+      <if test="userId!=null">
+        and author_id=#{userId}
+      </if>
+    </where>
+  </select>
+
+  <select id="selectForList" resultMap="allMap" >
+    select t.id,t.title,t.coverUrl,t.lastUpdateTime,u.id u_id,u.nickName,u.headImgUrl,r.name,t.releaseTime,t.state
+    from travel t left join user u on t.author_id = u.id
+    left join region r on r.id = t.place_id
+    <include refid="where_sql"/>
   </select>
 
 
@@ -110,4 +142,17 @@
       where t.id=#{tid}
   </select>
 
+  <update id="updateShowNum">
+    update travel
+    set
+      showNum = showNum + 1
+    where id = #{travelId}
+  </update>
+
+  <update id="changeState">
+        update travel
+      set state = #{state},
+          releaseTime = #{releaseTime}
+    where id = #{id}
+    </update>
 </mapper>

@@ -16,6 +16,23 @@ function getParams() {
 }
 
 
+//把表单input转为json对象
+$.fn.serializeObject = function () {
+    var o = {};
+    var a = this.serializeArray();
+    $.each(a, function () {
+        if (o[this.name]) {
+            if (!o[this.name].push) {
+                o[this.name] = [o[this.name]];
+            }
+            o[this.name].push(this.value || '');
+        } else {
+            o[this.name] = this.value || '';
+        }
+    });
+    return o;
+}
+
 //跳转到a链接中的地址
 function skipHref() {
     var url = $(this).data("href");

@@ -46,6 +46,11 @@
   <select id="selectAll" resultMap="BaseResultMap" >
     select id, name, parent_id, state
     from region
+    <where>
+      <if test="state!=null">
+        and state = #{state}
+      </if>
+    </where>
   </select>
   <select id="getRegionByParentId" resultType="cn.wolfcode.trip.base.domain.Region">
     <include refid="regionClomun"/>
